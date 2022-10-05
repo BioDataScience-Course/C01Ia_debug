@@ -13,7 +13,7 @@ Cet exercice est individuel et d'une durée limitée d'**une heure**.
 Vous devez :
 
 -   corriger un script R
--   ajuster un modèle
+-   ajuster un modèle (analyse discriminante linéaire)
 -   étudier les performances du modèle
 
 ## Consignes

@@ -4,7 +4,7 @@
 ################################################################################
 
 # Packages -------
-SciViews::R("ml" lang = "fr")
+SciViews::R("ml" lang = "fr"
 
 # Execute the script to download dataset ----
 source("R/mice_import.R")
@@ -18,11 +18,9 @@ skimr::skim(mcie)
 mice_corr <- correlation(mice[, 1:73], use = "complete.obs", method = "pearson")
 mice_corr
 
-pubi <-chart(data = mice, ubiquitin_n ~ class %fill=%class) +
+pubi <- chart(data = mice, ubiquitin_n ~ class %fill=% class)
   geom_boxplot(show.legend = FALSE)
 pubi
-
-table(mice$genotype, mice$treatment)
 
 mice <- sseparate(mice, mouseid, c("mouse", "repl"), remove = FALSE)
 table(mice$mouse)
