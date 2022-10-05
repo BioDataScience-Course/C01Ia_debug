@@ -34,6 +34,7 @@ mice %<-% smutate(mice, class = factor(class))
 
 # LDA ----
 # split dataset
+set.seed(3323219)
 mice_init <- initial_split(mice, strate = class)
 mice_train <- training(mice_init)
 mice_test <- training(mice_init)
