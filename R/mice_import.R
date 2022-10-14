@@ -16,8 +16,9 @@ mice <- janitor::clean_names(mice)
 
 # Remove and clean several variables -----
 skimr::skim(mice)
-mice <- sselect(mice, -h3me_k4_n, -egr1_n, -h3ac_k18_n, -bcl2_n, -bad_n)
-mice <- replace_NA(mice, 0)
+mice <- sselect(mice, -h3me_k4_n, -egr1_n, -h3ac_k18_n,- p_cfos_n, -bcl2_n, -bad_n, -bcatenin_n, -elk_n)
+mice <- sdrop_na(mice)
+skimr::skim(mice)
 
 # Save the dataset -----
 write$rds(mice, "data/mice.rds", compress = "xz")
