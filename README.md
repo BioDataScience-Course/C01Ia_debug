@@ -1,32 +1,34 @@
-# Débogage de script R
+# Débogage de script R et ADL
 
 ## Avant-propos
 
-Il s'agit de la première version de l'exercice de débogage.
+La première partie de ce projet est un petit auto-test pour vous rafraîchir l'esprit sur l'utilisation de R pour l'analyse des données. Il nécessite comme prérequis d'avoir déjà utilisé R (par exemple, cours de SDD I).
 
-Ce projet nécessite d'avoir assimilé l'ensemble des notions du premier module du cours de Science des Données Biologiques 3.
+La seconde partie est une analyse discriminante linéaire avec le package {mlearning}. Il faut avoir assimilé l'ensemble des notions du premier module du cours de Science des Données Biologiques III avant de réaliser cette partie. Elle contient aussi du code erroné à corriger.
+
+Ce projet correspond au template <https://github.com/BioDataScience-Course/C01Ia_debug>.
 
 ## Objectifs
 
-Cet exercice est individuel et d'une durée limitée d'**une heure**.
+Cet exercice est individuel, **court** et **cadré**.
 
 Vous devez :
 
--   corriger un script R
--   ajuster un modèle (analyse discriminante linéaire)
--   étudier les performances du modèle
+-   corriger un script R (`R/mice_lda.R` seulement, ne touchez pas à `R/mice_import.R`) !
+-   créer un classifieur utilisant l'analyse discriminante linéaire (ADL))
+-   étudier les performances du classifieur avec un set de test
 
 ## Consignes
 
-Corrigez le script `R/mice_lda.R`.
+Corrigez la première partie du script `R/mice_lda.R` avant d'aborder le module 1 du cours SDD III. Si vous n'y arrivez pas, revoyez les chapitres des cours SDD I et SDD II qui correspondent à vos lacunes avant d'aller plus avant. **Le script `R/mice_import.R` est appelé par `R/mice_lda.R` mais il ne doit pas être modifié. Il ne contient aucune erreur !**
 
-Créez ensuite un nouveau fichier `docs/critique.md`. Écrivez dans ce fichier une critique du modèle réalisée dans le script `R/mice_lda.R` de 5 à 10 phrases.
+Corrigez la seconde partie du script `R/mice_lda.R` lorsque vous aurez étudié le contenu du premier module du cours SDD III. Regardez d'un œil critique les résultats obtenus et demandez-vous si ce classifieur pourrait répondre aux attentes des scientifiques qui ont produit le jeu de données.
 
 ## Informations sur les données
 
 Ces données sont à disposition sur le site de l'UC Irvine Machine Learning Repository :
 
-[Higuera, Clara, Gardiner, Katheleen & Cios, Krzysztof. (2015). Mice Protein Expression. UCI Machine Learning Repository.](https://archive-beta.ics.uci.edu/ml/datasets/mice+protein+expression)
+[Higuera, Clara, Gardiner, Katheleen & Cios, Krzysztof. (2015). Mice Protein Expression. UCI Machine Learning Repository.](https://archive.ics.uci.edu/dataset/342/mice+protein+expression)
 
 Elles ont été employées dans le cadre de la publication suivante :
 
