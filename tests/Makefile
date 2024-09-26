@@ -4,12 +4,19 @@ test :
 clean :
 	echo "Nettoyage des résultats et tests..."
 	rm -rf results
-	echo "✔︎ Nettoyage terminé. Réexécutez les scripto."
+	echo "✔︎ Nettoyage terminé. Réexécutez les scripts et les rendus Quarto."
 
 original :
 	echo "Configuration du dépôt avec les fichiers d'origine..."
+	echo "  • Élimination du cache des données..."
+	rm -f ../data/mice.rds
+	rm -f ../data/data_raw/mice_raw.xls
+	rm -f ../data/mice_lda.rds
 	echo "  • Remplacement des fichiers de travail par les originaux..."
 	Rscript -e "source('tools_tests.R'); res <- prepare_files(type = 'original')"
+	echo "  • Élimination des versions compilées des documents Quarto..."
+	rm -f ../mice_notebook.html
+	rm -rf ../mice_notebook_files
 	echo "  • Effacement des objets créés pour les tests..."
 	rm -rf results
 	echo "✔︎ Documents originaux installés."
@@ -22,9 +29,13 @@ solution :
 	Rscript -e "source('tools_tests.R'); res <- decrypt_solutions(error = FALSE)"
 	echo "  • Remplacement des fichiers de travail par les solutions..."
 	Rscript -e "source('tools_tests.R'); res <- prepare_files(type = 'solution')"
+	echo "  • Élimination des version compilées des documents Quarto..."
+	rm -f ../mice_notebook.html
+	rm -rf ../mice_notebook_files
 	echo "  • Effacement des objets créés pour les tests..."
 	rm -rf results
 	echo "✔︎ Solution installée. Réexécutez les scripts et les rendus Quarto."
+
 
 prepare :
 	echo "Préparation pour la distribution du dépôt..."
@@ -38,6 +49,9 @@ prepare :
 	Rscript -e "source('tools_tests.R'); res <- prepare_files(type = 'original', remove_last_saved = TRUE)"
 	echo "  • Cryptage des fichiers de solution..."
 	Rscript -e "source('tools_tests.R'); res <- encrypt_solutions()"
+	echo "  • Élimination des versions compilées des documents Quarto..."
+	rm -f ../mice_notebook.html
+	rm -rf ../mice_notebook_files
 	echo "  • Effacement des objets créés pour les tests..."
 	rm -rf results
 	echo "✔︎ Préparation terminée !"

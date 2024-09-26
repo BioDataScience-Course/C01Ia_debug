@@ -1,4 +1,4 @@
-# Débogage de script R et ADL
+# SDD III module 1 : Débogage d'un document Quarto et ADL
 
 ## Avant-propos
 
@@ -6,24 +6,29 @@ La première partie de ce projet est un petit auto-test pour vous rafraîchir l'
 
 La seconde partie est une analyse discriminante linéaire avec le package {mlearning}. Il faut avoir assimilé l'ensemble des notions du premier module du cours de Science des Données Biologiques III avant de réaliser cette partie. Elle contient aussi du code erroné à corriger.
 
-Ce projet correspond au template <https://github.com/BioDataScience-Course/C01Ia_debug>.
+Il correspond au dépôt GitHub <https://github.com/BioDataScience-Course/C01Ia_debug>.
 
 ## Objectifs
 
-Cet exercice est individuel, **court** et **cadré**.
+Cet exercice est individuel, **court** et **cadré**. Vous devez :
 
-Vous devez :
-
--   corriger un script R (`R/mice_lda.R` seulement, ne touchez pas à `R/mice_import.R`) !
--   créer un classifieur utilisant l'analyse discriminante linéaire (ADL))
+-   corriger le code R présent dans le document Quarto
+-   créer un classifieur utilisant l'analyse discriminante linéaire (ADL)
 -   étudier les performances du classifieur avec un set de test
 
 ## Consignes
 
-Corrigez la première partie du script `R/mice_lda.R` avant d'aborder le module 1 du cours SDD III. Si vous n'y arrivez pas, revoyez les chapitres des cours SDD I et SDD II qui correspondent à vos lacunes avant d'aller plus avant. **Le script `R/mice_import.R` est appelé par `R/mice_lda.R` mais il ne doit pas être modifié. Il ne contient aucune erreur !**
+Des collègues scientifiques travaillent sur la trisomie 21. Ils en sont à l'étude sur des souris. Ils vous ont transmis un document Quarto (`mice_notebook.qmd`) afin de vous montrer les premières avancées dans le traitement des données collectées.
 
-Corrigez la seconde partie du script `R/mice_lda.R` lorsque vous aurez étudié le contenu du premier module du cours SDD III. Regardez d'un œil critique les résultats obtenus et demandez-vous si ce classifieur pourrait répondre aux attentes des scientifiques qui ont produit le jeu de données.
+Ce document ne compile pas à cause d'une multitude de fautes dans le code. On peut les regrouper en deux grandes catégories :
 
+- les erreurs syntaxiques (code incorrect qui ne s'exécute pas) comme l'oubli de parenthèses, de virgules, de points, de guillemets...
+- les erreurs conceptuelles (code qui s'exécute, mais effectue un mauvais traitement) comme par exemple l'entraînement du modèle sur les données de test ou encore les tests de performance réalisés sur les données d'entraînement.
+
+**Le script R/mice_import.R ne doit pas être modifié. Il ne contient aucune erreur !**
+
+Corrigez ce carnet de notes. Il doit être possible de le compiler (obtenir un HTML en appuyant sur le bouton Rendu) sans qu'aucune erreur n'apparaisse. Vous avez une batterie de tests à votre disposition dans l'onglet 'Construire' -> bouton 'Construire tout' pour vérifier vos corrections. N'utilisez pas l'argument `echo=FALSE` dans vos chunks. Le code R qui génère les résultats doit rester visible dans la version HTML finale. Enfin, vérifiez que votre dernier commit et push sont bien enregistrés sur GitHub à la fin de l'exercice.
+ 
 ## Informations sur les données
 
 Ces données sont à disposition sur le site de l'UC Irvine Machine Learning Repository :

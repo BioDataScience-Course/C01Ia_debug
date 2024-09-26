@@ -1,0 +1,143 @@
+---
+title: "Expression de protéines dans le cortex cérébral de souris soumises à différents tests d'apprentissage"
+subtitle: "Analyse discriminante linéaire"
+author: "___"
+date: "`r Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+    toc: true
+editor: visual
+lang: fr
+bibliography: references.bib
+---
+
+<!--% Votre objectif est de déboguer ce document Quarto afin qu’il compile. Vous avez à votre disposition des tests pour vérifier votre progression. -->
+
+<!--% Remplacez author: "___" par votre nom. Votre nom n'est pas votre login Github. ex: author: "John Doe". Attention, l'entête YAML est très sensible aux espaces, aux guillemets et à l'"indentation" (= le nombre d'espaces blancs au début de chaque ligne). Par précaution, mettez toujours le texte derrière title:, author:, date:, … entre guillemets doubles et respectez l'indentation initiale. -->
+
+```{r setup, include=FALSE}
+# This is needed to the SDD test suite, do not use in a "real" project
+if (!"tools:tests" %in% search())
+  source(here::here("tests/tools_tests.R"), attach(NULL, name = "tools:tests"))
+
+# Configure SciViews::R environment
+SciViews::R("ml" lang = "fr)
+```
+
+## Introduction et but
+
+Le syndrome de Down est une anomalie chromosomique due à la trisomie 21, qui entraîne une déficience intellectuelle. La surexpression des gènes du chromosome supplémentaire codés provoque des déficits d'apprentissage et de mémoire. Afin d'identifier des cibles médicamenteuses potentielles, nous avons étudié les niveaux d'expression de 77 protéines chez des souris de génotype normal et chez leurs congénères trisomiques, avec et sans traitement par le médicament mémantine.
+
+## Matériel et méthodes
+
+Les données ont été collectées dans le cadre de l'étude menée par @higuera2015 *.* Ces données et les métadonnées sont mises à disposition sous la licence CC BY 4.0 [@clarahiguera2015].
+
+L'analyse discriminante linéaire est employée pour définir le modèle de classification. L'analyse est réalisée avec la SciViews Box 2024 dans [Saturn Cloud](https://saturncloud.io) (Linux) avec le [logiciel R](https://www.r-project.org) (`r R.version.string`).
+
+## Analyses
+
+```{r import, record='RODFS', object='mice'}
+if (!file_exists("data/mice.rds"))
+  source("R/mice_import.R")
+
+mice <- read$csv("data/mice.rds")
+```
+
+### Description des données
+
+```{r skim}
+skimr::skim(mice)
+```
+
+-   Ce tableau de données comprend 5 variables caractères et 69 variables numériques.
+
+-   On dénombre 1073 observations.
+
+-   Ce tableau ne comprend aucune valeur manquante après traitement des données initiales.
+
+```{r correlation, record='ROA', object='mice_corr', arg='dimnames'}
+# Matrice de corrélation : trop de variables -> seulement les dix premières
+mice_corr <- correlation(mice[, 1:10],
+  use = "complete.obs", method = "pearson")
+plot(mice_corr, type = "upper")
+```
+
+-   Les dix première variables numériques sont employées dans la matrice de corrélation de Pearson.
+
+-   Une corrélation proche de 1 est observable entre les protéines dyrk1a_n et itsn1_n
+
+```{r chart, record='RNCS'}
+# Graphique de l'ubiquitin en fonction de la classe
+chart(data = mice, ubiquitin_n ~ class %fill=% class) 
+  geom_boxplot(show.legend = FAlSE)
+```
+
+-   Que ce soit pour les individus de contrôle (c-) ou les individus trisomiques (t-), les deux boîtes de dispersion les plus élevées concernent les groupes n'ayant pas été stimulés (SC) et ayant reçu le traitement (-m).
+
+```{r table, record='RNP', arg='col_keys', warning=FALSE}
+tabularise(table(mice$class)
+```
+
+-   Les proportions dans chaque groupe sont similaires.
+
+### Set d'apprentissage et de test
+
+```{r reduce, record='RODFS', object='mice'}
+# Elimination des variables caractères non essentielles
+mice <- sfilter(mice, -mouse_id,
+  -genotype, -treatment, behavior)
+# conversion de `class`en variable facteur
+mice <- smutate(mice, class = factorclass))
+```
+
+```{r split, record='RODFS', object='mice_train'}
+# Définition du set d'apprentissage et du set de test
+set.seed(7235)
+mice_init  <- initial_split(mice, prop = 2/3, strata = class)
+# Set d'apprentissage
+mice_train <- testing(mice_init)
+# Set de test
+mice_test  <- testing(mice_init)
+```
+
+-   Le set d'apprentissage comprend 713 observations et le set de test 360. Une répartition des 2/3 a été employée.
+
+### Apprentissage du modèle
+
+```{r model, record='ROP', object='mice_lda', arg='counts'}
+mice_lda <- ml_lda(data = mice, class ~ .)
+mice_lda
+```
+
+-   L'algorithme met en évidence un potentiel problème de collinéarité qu'il convient de traiter.
+
+### Test du modèle
+
+```{r confusion,record='ROA', object='mice_conf', arg='class,row.freqs,col.freqs,prior,stats'}
+mice_pred <- predict(mice_lda, mice_train)
+mice_conf <- confusion(mice_pred, mice_train$class)
+plot(miec_conf)
+```
+
+-   Le classifieur commet très peu d'erreurs.
+-   Les erreurs sont quasi exclusivement relatives aux individus dont l'apprentissage est stimulé.
+
+```{r summaryconf}
+summary(mice_conf, type = c("Fscore", "Recall", "Precision"))
+```
+
+-   Les trois métriques ont des valeurs excellentes.
+
+## Conclusion
+
+Ce classifieur commet peu d'erreurs. Néanmoins, une analyse plus approfondie est nécessaire pour traiter ces observations. En effet, la présence de colinéarité entre les variables doit être étudiée.
+
+De plus, le nombre de souris étudiées est de 78, alors que l'on retrouve plus de 1000 observations dans le tableau de données. Chaque dosage a été répliqué 15 fois.
+
+```{r save}
+#Sauvegarde du classifieur.
+dir_create("data")
+write$rds(mice_lda, "data/mice_lda.rds")
+```
