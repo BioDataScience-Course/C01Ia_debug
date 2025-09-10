@@ -2,11 +2,11 @@
 
 ## Avant-propos
 
-La première partie de ce projet est un petit auto-test pour vous rafraîchir l'esprit sur l'utilisation de R pour l'analyse des données. Il nécessite comme prérequis d'avoir déjà utilisé R (par exemple, cours de SDD I).
+La première partie de ce projet est un petit autotest pour vous rafraîchir l'esprit sur l'utilisation de R pour l'analyse des données. Il nécessite comme prérequis d'avoir déjà utilisé R (par exemple, cours de SDD I).
 
 La seconde partie est une analyse discriminante linéaire avec le package {mlearning}. Il faut avoir assimilé l'ensemble des notions du premier module du cours de Science des Données Biologiques III avant de réaliser cette partie. Elle contient aussi du code erroné à corriger.
 
-Il correspond au dépôt GitHub <https://github.com/BioDataScience-Course/C01Ia_debug>.
+Il correspond au dépôt GitHub <https://github.com/BioDataScience-Course/C01Ia_debug> et est distribué sous licence [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ## Objectifs
 
@@ -22,13 +22,13 @@ Des collègues scientifiques travaillent sur la trisomie 21. Ils en sont à l'é
 
 Ce document ne compile pas à cause d'une multitude de fautes dans le code. On peut les regrouper en deux grandes catégories :
 
-- les erreurs syntaxiques (code incorrect qui ne s'exécute pas) comme l'oubli de parenthèses, de virgules, de points, de guillemets...
-- les erreurs conceptuelles (code qui s'exécute, mais effectue un mauvais traitement) comme par exemple l'entraînement du modèle sur les données de test ou encore les tests de performance réalisés sur les données d'entraînement.
+-   les erreurs syntaxiques (code incorrect qui ne s'exécute pas) comme l'oubli de parenthèses, de virgules, de points, de guillemets...
+-   les erreurs conceptuelles (code qui s'exécute, mais effectue un mauvais traitement), comme par exemple, l'entraînement du modèle sur les données de test ou encore les tests de performance réalisés sur les données d'entraînement.
 
 **Le script R/mice_import.R ne doit pas être modifié. Il ne contient aucune erreur !**
 
-Corrigez ce carnet de notes. Il doit être possible de le compiler (obtenir un HTML en appuyant sur le bouton Rendu) sans qu'aucune erreur n'apparaisse. Vous avez une batterie de tests à votre disposition dans l'onglet 'Construire' -> bouton 'Construire tout' pour vérifier vos corrections. N'utilisez pas l'argument `echo=FALSE` dans vos chunks. Le code R qui génère les résultats doit rester visible dans la version HTML finale. Enfin, vérifiez que votre dernier commit et push sont bien enregistrés sur GitHub à la fin de l'exercice.
- 
+Corrigez ce carnet de notes. Il doit être possible de le compiler (obtenir un HTML en appuyant sur le bouton Rendu) sans qu'aucune erreur n'apparaisse. Vous avez une batterie de tests à votre disposition dans l'onglet 'Construire' -\> bouton 'Construire tout' pour vérifier vos corrections. N'utilisez pas l'argument `echo=FALSE` dans vos chunks. Le code R qui génère les résultats doit rester visible dans la version HTML finale. Enfin, vérifiez que votre dernier commit et push sont bien enregistrés sur GitHub à la fin de l'exercice.
+
 ## Informations sur les données
 
 Ces données sont à disposition sur le site de l'UC Irvine Machine Learning Repository :

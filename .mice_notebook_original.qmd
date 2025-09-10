@@ -18,9 +18,12 @@ bibliography: references.bib
 <!--% Remplacez author: "___" par votre nom. Votre nom n'est pas votre login Github. ex: author: "John Doe". Attention, l'entête YAML est très sensible aux espaces, aux guillemets et à l'"indentation" (= le nombre d'espaces blancs au début de chaque ligne). Par précaution, mettez toujours le texte derrière title:, author:, date:, … entre guillemets doubles et respectez l'indentation initiale. -->
 
 ```{r setup, include=FALSE}
-# This is needed to the SDD test suite, do not use in a "real" project
+# Ceci est nécessaire pour les tests SDD, ne pas utiliser dans un "vrai" projet
 if (!"tools:tests" %in% search())
   source(here::here("tests/tools_tests.R"), attach(NULL, name = "tools:tests"))
+
+# Configure Knitr to use AGG as graphic device
+knitr::opts_chunk$set(dev = "ragg_png")
 
 # Configure SciViews::R environment
 SciViews::R("ml" lang = "fr)
@@ -34,7 +37,7 @@ Le syndrome de Down est une anomalie chromosomique due à la trisomie 21, qui en
 
 Les données ont été collectées dans le cadre de l'étude menée par @higuera2015 *.* Ces données et les métadonnées sont mises à disposition sous la licence CC BY 4.0 [@clarahiguera2015].
 
-L'analyse discriminante linéaire est employée pour définir le modèle de classification. L'analyse est réalisée avec la SciViews Box 2024 dans [Saturn Cloud](https://saturncloud.io) (Linux) avec le [logiciel R](https://www.r-project.org) (`r R.version.string`).
+L'analyse discriminante linéaire est employée pour définir le modèle de classification. L'analyse est réalisée avec le logiciel R (`r R.version.string`) et en particulier le package {mlearning} version `r packageVersion("mlearning")` avec la [SciViews Box 2025](https://www.sciviews.org/software/svbox/) dans [Saturn Cloud](https://saturncloud.io/) (Linux Ubuntu 22.04).
 
 ## Analyses
 
@@ -57,18 +60,18 @@ skimr::skim(mice)
 
 -   Ce tableau ne comprend aucune valeur manquante après traitement des données initiales.
 
-```{r correlation, record='ROA', object='mice_corr', arg='dimnames'}
+```{r correlation, record='ROA', object='mice_corr', arg='dimnames', warning=FALSE}
 # Matrice de corrélation : trop de variables -> seulement les dix premières
 mice_corr <- correlation(mice[, 1:10],
   use = "complete.obs", method = "pearson")
 plot(mice_corr, type = "upper")
 ```
 
--   Les dix première variables numériques sont employées dans la matrice de corrélation de Pearson.
+-   Les dix premières variables numériques sont employées dans la matrice de corrélation de Pearson.
 
 -   Une corrélation proche de 1 est observable entre les protéines dyrk1a_n et itsn1_n
 
-```{r chart, record='RNCS'}
+```{r chart, record='RNCS', arg='no.data'}
 # Graphique de l'ubiquitin en fonction de la classe
 chart(data = mice, ubiquitin_n ~ class %fill=% class) 
   geom_boxplot(show.legend = FAlSE)
@@ -111,7 +114,7 @@ mice_lda <- ml_lda(data = mice, class ~ .)
 mice_lda
 ```
 
--   L'algorithme met en évidence un potentiel problème de collinéarité qu'il convient de traiter.
+-   L'algorithme met en évidence un potentiel problème de colinéarité qu'il convient de traiter.
 
 ### Test du modèle
 
@@ -121,8 +124,8 @@ mice_conf <- confusion(mice_pred, mice_train$class)
 plot(miec_conf)
 ```
 
--   Le classifieur commet très peu d\'erreurs.
--   Les erreurs sont quasi exclusivement relatives aux individus dont l\'apprentissage est stimulé.
+-   Le classifieur commet très peu d'erreurs.
+-   Les erreurs sont quasi exclusivement relatives aux individus dont l'apprentissage est stimulé.
 
 ```{r summaryconf}
 summary(mice_conf, type = c("Fscore", "Recall", "Precision"))

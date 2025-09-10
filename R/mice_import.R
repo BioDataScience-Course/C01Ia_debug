@@ -2,7 +2,7 @@
 # Url  : https://archive.ics.uci.edu/dataset/342/mice+protein+expression
 # DOI  : 10.24432/C50S3Z
 # Note : vous ne devez rien changer dans ce script et il est exécuté
-# automatiquement depuis mice_lda.R qui est le fichier à corriger du projet
+# automatiquement depuis mice_notebook.qmd qui est le fichier à corriger du projet
 
 # Configuration de l'environnement
 SciViews::R(lang = "fr")
