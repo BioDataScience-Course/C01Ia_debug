@@ -13,7 +13,7 @@ lang: fr
 bibliography: references.bib
 ---
 
-<!--% Votre objectif est de déboguer ce document Quarto afin qu’il compile. Vous avez à votre disposition des tests pour vérifier votre progression. -->
+<!--% Votre objectif est de déboguer ce document Quarto afin qu’il compile correctement. Vous avez à votre disposition des tests pour vérifier votre progression. -->
 
 <!--% Remplacez author: "___" par votre nom. Votre nom n'est pas votre login Github. ex: author: "John Doe". Attention, l'entête YAML est très sensible aux espaces, aux guillemets et à l'"indentation" (= le nombre d'espaces blancs au début de chaque ligne). Par précaution, mettez toujours le texte derrière title:, author:, date:, … entre guillemets doubles et respectez l'indentation initiale. -->
 
