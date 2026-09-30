@@ -73,3 +73,5 @@ www/.vscode/
 .Thumbs.db
 Thumbs.db
 core.*
+
+data/data_raw/

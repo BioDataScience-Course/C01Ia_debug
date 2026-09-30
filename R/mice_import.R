@@ -11,10 +11,16 @@ SciViews::R(lang = "fr")
 # Importation des données depuis Internet ---------------------------------
 
 dir_create("data/data_raw")
-mice <- read$xls(
-  "https://archive.ics.uci.edu/ml/machine-learning-databases/00342/Data_Cortex_Nuclear.xls",
-  cache_file = "data/data_raw/mice_raw.xls")
+# Téléchargement du fichier zip.
+if(!fs::file_exists("data/data_raw/Data_Cortex_Nuclear.xls")) {
+  download.file(
+    "https://archive.ics.uci.edu/static/public/342/mice+protein+expression.zip",
+    destfile = "data/data_raw/mice.zip")
+  unzip("data/data_raw/mice.zip", exdir = "data/data_raw/")
+  fs::file_delete("data/data_raw/mice.zip")
+}
 
+mice <- read$xls("data/data_raw/Data_Cortex_Nuclear.xls")
 
 # Nettoyage du nom des variables ------------------------------------------
 

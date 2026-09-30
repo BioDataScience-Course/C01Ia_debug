@@ -10,6 +10,8 @@ format:
     toc: true
 editor: visual
 lang: fr
+svbox: 2026
+vm: "Ubuntu 24.04.3 LTS"
 bibliography: references.bib
 ---
 
@@ -22,11 +24,14 @@ bibliography: references.bib
 if (!"tools:tests" %in% search())
   source(here::here("tests/tools_tests.R"), attach(NULL, name = "tools:tests"))
 
-# Configure Knitr to use AGG as graphic device
+# Configurez Knitr pour utiliser AGG comme périphérique graphique
 knitr::opts_chunk$set(dev = "ragg_png")
 
-# Configure SciViews::R environment
+# Configuration de l'environnement SciViews::R
 SciViews::R("ml" lang = "fr)
+
+# Fonction complémentaire
+source("R/functions.R")
 ```
 
 ## Introduction et but
@@ -37,7 +42,18 @@ Le syndrome de Down est une anomalie chromosomique due à la trisomie 21, qui en
 
 Les données ont été collectées dans le cadre de l'étude menée par @higuera2015 *.* Ces données et les métadonnées sont mises à disposition sous la licence CC BY 4.0 [@clarahiguera2015].
 
-L'analyse discriminante linéaire est employée pour définir le modèle de classification. L'analyse est réalisée avec le logiciel R (`r R.version.string`) et en particulier le package {mlearning} version `r packageVersion("mlearning")` avec la [SciViews Box 2025](https://www.sciviews.org/software/svbox/) dans [Saturn Cloud](https://saturncloud.io/) (Linux Ubuntu 22.04).
+L'analyse discriminante linéaire est employée pour définir le modèle de classification. L'analyse est réalisée avec le logiciel R (`r R.version.string`) et en particulier le package {mlearning} version `r packageVersion("mlearning")` dans la [SciViews Box `r rmarkdown::metadata$svbox`](https://www.sciviews.org/software/svbox/). [Saturn Cloud](https://saturncloud.io/) (`r rmarkdown::metadata$vm`) est utilisé pour exécuter le code et compiler la version HTML de ce bloc-notes.
+
+
+<!--% Spécifier si vous avez employé l'intelligence artificielle dans votre projet. -->
+
+```{r ai_comment, output='asis'}
+select_answer(r"-{
+[] -   Ce document a été rédigé en étant assisté par l'Intelligence Artificielle.
+[] -   Ce document a été rédigé sans recours à l'Intelligence Artificielle.}-")
+```
+
+<!-- Précisez ci-dessous l'utilisation que vous avez faite de l'IA. Citez le modèle utilisé. -->
 
 ## Analyses
 
@@ -54,22 +70,27 @@ mice <- read$csv("data/mice.rds")
 skimr::skim(mice)
 ```
 
--   Ce tableau de données comprend 5 variables caractères et 69 variables numériques.
+- Ce tableau de données comprend 5 variables caractères et 69 variables numériques.
 
--   On dénombre 1073 observations.
+- On dénombre 1073 observations.
 
--   Ce tableau ne comprend aucune valeur manquante après traitement des données initiales.
+- Ce tableau ne comprend aucune valeur manquante après traitement des données initiales.
 
 ```{r correlation, record='ROA', object='mice_corr', arg='dimnames', warning=FALSE}
 # Matrice de corrélation : trop de variables -> seulement les dix premières
 mice_corr <- correlation(mice[, 1:10],
   use = "complete.obs", method = "pearson")
+
+# Fonctions qui ordonnent les paires de variables fortement corrélées
+correlation_best(mice_corr, n = 10)
+
+# Graphique de corrélation
 plot(mice_corr, type = "upper")
 ```
 
--   Les dix premières variables numériques sont employées dans la matrice de corrélation de Pearson.
+- Les dix premières variables numériques sont employées dans la matrice de corrélation de Pearson.
 
--   Une corrélation proche de 1 est observable entre les protéines dyrk1a_n et itsn1_n
+- Une corrélation proche de 1 est observable entre les protéines dyrk1a_n et itsn1_n
 
 ```{r chart, record='RNCS', arg='no.data'}
 # Graphique de l'ubiquitin en fonction de la classe
@@ -77,21 +98,21 @@ chart(data = mice, ubiquitin_n ~ class %fill=% class)
   geom_boxplot(show.legend = FAlSE)
 ```
 
--   Que ce soit pour les individus de contrôle (c-) ou les individus trisomiques (t-), les deux boîtes de dispersion les plus élevées concernent les groupes n'ayant pas été stimulés (SC) et ayant reçu le traitement (-m).
+- Que ce soit pour les individus de contrôle (c-) ou les individus trisomiques (t-), les deux boîtes de dispersion les plus élevées concernent les groupes n'ayant pas été stimulés (SC) et ayant reçu le traitement (-m).
 
 ```{r table, record='RNP', arg='col_keys', warning=FALSE}
 tabularise(table(mice$class)
 ```
 
--   Les proportions dans chaque groupe sont similaires.
+- Les proportions dans chaque groupe sont similaires.
 
 ### Set d'apprentissage et de test
 
 ```{r reduce, record='RODFS', object='mice'}
-# Elimination des variables caractères non essentielles
+# Elimination des variables caractères non essentielles (4)
 mice <- sfilter(mice, -mouse_id,
   -genotype, -treatment, behavior)
-# conversion de `class`en variable facteur
+# Conversion de `class`en variable facteur
 mice <- smutate(mice, class = factorclass))
 ```
 
@@ -105,7 +126,7 @@ mice_train <- testing(mice_init)
 mice_test  <- testing(mice_init)
 ```
 
--   Le set d'apprentissage comprend 713 observations et le set de test 360. Une répartition des 2/3 a été employée.
+- Le set d'apprentissage comprend 713 observations et le set de test 360. Une répartition des 2/3 a été employée.
 
 ### Apprentissage du modèle
 
@@ -114,7 +135,7 @@ mice_lda <- ml_lda(data = mice, class ~ .)
 mice_lda
 ```
 
--   L'algorithme met en évidence un potentiel problème de colinéarité qu'il convient de traiter.
+- L'algorithme met en évidence un potentiel problème de colinéarité qu'il convient de traiter.
 
 ### Test du modèle
 
@@ -124,14 +145,14 @@ mice_conf <- confusion(mice_pred, mice_train$class)
 plot(miec_conf)
 ```
 
--   Le classifieur commet très peu d'erreurs.
--   Les erreurs sont quasi exclusivement relatives aux individus dont l'apprentissage est stimulé.
+- Le classifieur commet très peu d'erreurs.
+- Les erreurs sont quasi exclusivement relatives aux individus dont l'apprentissage est stimulé.
 
 ```{r summaryconf}
 summary(mice_conf, type = c("Fscore", "Recall", "Precision"))
 ```
 
--   Les trois métriques ont des valeurs excellentes.
+- Les trois métriques ont des valeurs excellentes.
 
 ## Conclusion
 

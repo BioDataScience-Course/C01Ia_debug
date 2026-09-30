@@ -1,6 +1,6 @@
 # Vérifications de mice_notebook.qmd
-mice <- parse_rmd("../../mice_notebook.qmd",
-  allow_incomplete = TRUE, parse_yaml = TRUE)
+mice  <- try(parsermd::parse_qmd("../../mice_notebook.qmd"))
+expect_true(TRUE, info = mice )
 
 test_that("Le bloc-notes est-il compilé en un fichier final HTML ?", {
   expect_true(is_rendered("mice_notebook.qmd"))
@@ -32,7 +32,7 @@ test_that("La structure du document est-elle conservée ?", {
   # d'origine dans le dépôt "template" du document (lien au début du fichier
   # README.md).
 
-  expect_true(all(c("setup", "import", "skim", "correlation", "chart", "table",
+  expect_true(all(c("setup", "ai_comment","import", "skim", "correlation", "chart", "table",
     "reduce", "split", "model", "confusion", "summaryconf", "save")
     %in% rmd_node_label(mice)))
   # Un ou plusieurs labels de chunks nécessaires à l'évaluation manquent
@@ -51,20 +51,21 @@ test_that("La structure du document est-elle conservée ?", {
 })
 
 test_that("L'entête YAML a-t-il été complété ?", {
-  expect_true(mice[[1]]$author != "___")
-  expect_true(!grepl("__", mice[[1]]$author))
-  expect_true(grepl("^[^_]....+", mice[[1]]$author))
+  authors <- mice[[1]]@yaml[["author"]]
+  expect_true(authors != "___")
+  expect_true(!grepl("__", authors))
+  expect_true(grepl("^[^_]....+", authors))
   # Le nom d'auteur n'est pas complété ou de manière incorrecte dans l'entête
   # Vous devez indiquer votre nom dans l'entête YAML à la place de "___" et
   # éliminer les caractères '_' par la même occasion.
 
-  expect_true(grepl("[a-z]", mice[[1]]$author))
+  expect_true(grepl("[a-z]", authors))
   # Aucune lettre minuscule n'est trouvée dans le nom d'auteur
   # Avez-vous bien complété le champ 'author' dans l'entête YAML ?
   # Vous ne pouvez pas écrire votre nom tout en majuscules. Utilisez une
   # majuscule en début de nom et de prénom, et des minuscules ensuite.
 
-  expect_true(grepl("[A-Z]", mice[[1]]$author))
+  expect_true(grepl("[A-Z]", authors))
   # Aucune lettre majuscule n'est trouvée dans le nom d'auteur
   # Avez-vous bien complété le champ 'author' dans l'entête YAML ?
   # Vous ne pouvez pas écrire votre nom tout en minuscules. Utilisez une

@@ -43,7 +43,7 @@ prepare :
 	if [ ! -e ".key" ]; then echo "✗ Exécution interrompue : mot de passe introuvable !" && exit 1; fi
 	echo "  • Élimination du cache des données..."
 	rm -f ../data/mice.rds
-	rm -f ../data/data_raw/mice_raw.xls
+	rm -f ../data/data_raw/Data_Cortex_Nuclear.xls
 	rm -f ../data/mice_lda.rds
 	echo "  • Remplacement des fichiers de travail par les originaux..."
 	Rscript -e "source('tools_tests.R'); res <- prepare_files(type = 'original', remove_last_saved = TRUE)"
